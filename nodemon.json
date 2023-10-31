@@ -2,6 +2,7 @@
   "env": {
     "DB_USER": "janstovr",
     "DB_PASSWORD": "fooBar83",
-    "DB_NAME": "drug-tracker"
+    "DB_NAME": "drug-tracker",
+    "SECRET_TOKEN": "gikkenturisskogen" 
   }
 }
