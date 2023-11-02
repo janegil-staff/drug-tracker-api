@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const entrySchema = new Schema(
   {
     type: { type: String, required: true },
-    amount: { type: String, required: true },
+    amount: { type: Number, required: true },
     price: { type: Number, required: true },
     user: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
   },
