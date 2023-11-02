@@ -7,5 +7,8 @@ const router = express.Router();
 
 router.use(checkAuth);
 
-router.post('/', entriesController.createEntry),
+router.get('/', entriesController.getUserEntries);
+
+router.post('/', entriesController.createEntry);
+
 module.exports = router;
