@@ -1,12 +1,15 @@
+const mongoose = require("mongoose");
+
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema(
+const entrySchema = new Schema(
   {
     type: { type: String, required: true },
+    amount: { type: String, required: true },
     price: { type: Number, required: true },
-    creator: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
+    user: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("Entry", entrySchema);
