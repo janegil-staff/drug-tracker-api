@@ -45,7 +45,7 @@ const signup = async (req, res, next) => {
     return next(error);
   }
   const createdUser = new User({
-    name,
+    name: name || '',
     email,
     image: null,
     password: hashedPassword,
@@ -151,5 +151,28 @@ const login = async (req, res, next) => {
   });
 }
 
+const getUser = async (req, res, next) => {
+  let userId = req.userData.userId;
+  let user;
+
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    const error = new HttpError("Fetching users failed.", 500);
+    return next(error);
+  }
+
+  if (!user) {
+    const error = new HttpError(
+      "Could not find entry for the provided id.",
+      404
+    );
+    return next(error);
+  }
+
+  res.status(200).json({ user });
+}
+
 exports.signup = signup;
 exports.login = login;
+exports.getUser = getUser;

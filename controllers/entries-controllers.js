@@ -6,6 +6,7 @@ const User = require("../models/user");
 const HttpError = require("../models/http-error");
 
 const createEntry = async (req, res, next) => {
+
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(
@@ -14,6 +15,7 @@ const createEntry = async (req, res, next) => {
   }
   const { type, amount, price } = req.body;
 
+  
   const createdEntry = new Entry({
     type,
     amount,
@@ -36,14 +38,17 @@ const createEntry = async (req, res, next) => {
     const error = new HttpError("Could not find user for provided id.", 404);
     return next(error);
   }
-
+ 
   try {
+
     const sess = await mongoose.startSession();
     sess.startTransaction();
     await createdEntry.save({ session: sess });
     user.entries.push(createdEntry);
+   
     await user.save({ session: sess });
     await sess.commitTransaction();
+
   } catch (err) {
     const error = new HttpError(
       "Creating entry failed, please try again.",
@@ -60,21 +65,21 @@ const getUserEntries = async (req, res, next) => {
   let entries;
 
   try {
-    entries = await Entry.find({user: userId});
+    entries = await Entry.find({ user: userId });
   } catch (err) {
     const error = new HttpError("Fetching users failed.", 500);
     return next(error);
   }
 
-  if(!entries){
+  if (!entries) {
     const error = new HttpError(
       "Could not find entry for the provided id.",
       404
     );
-    return next(error); 
+    return next(error);
   }
- 
-  res.json({ entries });
+
+  res.json({ entries: entries.reverse() });
 };
 
 exports.getUserEntries = getUserEntries;
